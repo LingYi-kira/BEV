@@ -1,0 +1,29 @@
+defaults: 
+  - data: kitti
+  - training
+  - _self_
+model:
+  name: bevnet
+  latent_dim: 128
+  matching_dim: 8
+  z_max: 32
+  x_max: 32
+  pixel_per_meter: ${data.pixel_per_meter}
+  num_scale_bins: 33
+  balance_factor: 100
+  image_encoder:
+    name: feature_extractor
+    encoder: resnet101
+    input_dim: 3
+    output_dim: ${..latent_dim}
+    pretrained: true
+    decoder_norm: nn.BatchNorm2d
+  bev_net:
+    num_blocks: 4
+    latent_dim: ${..latent_dim}
+    output_dim: ${..matching_dim}
+    confidence: true
+  pose_encoder:
+    input_dim: 256
+    mid_dim: 512
+    output_dim: 1024

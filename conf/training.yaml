@@ -1,0 +1,29 @@
+experiment:
+  name: ???
+  gpus: 4
+  gpus_device: [0, 1, 2, 3]
+  seed: 42
+  save_dir: "./outputs"
+training:
+  lr: 1e-4
+  lr_scheduler:
+    name: "ReduceLROnPlateau"
+    args:
+      factor: 0.80
+      patience: 10
+      threshold: 1e-4
+      min_lr: 1e-5
+  trainer:
+    check_val_every_n_epoch: 2  # N次训练步骤进行一次验证
+    log_every_n_steps: 500  # N次步骤进行一次日志记录
+    max_epochs: 200
+  checkpointing:
+    monitor: "loss/total_loss/val"
+    save_top_k: 5
+    mode: "min"
+hydra:
+  run:
+    dir: outputs/${hydra.job.name}/hydra/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    name: ${experiment.name}
+    chdir: false

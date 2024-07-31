@@ -1,0 +1,30 @@
+name: kitti
+data_dir: "./data"
+sequence_length: 2
+train_seqs: ['00', '01', '02', '03', '04', '05', '06', '07', '08']
+test_seqs: ['09', '10']
+random: True
+seed: ${experiment.seed}
+loading:
+  train:
+    batch_size: 12
+    num_workers: 24
+  val:
+    val_split: 0.2
+    batch_size: ${..train.batch_size}
+    num_workers: ${..train.num_workers}
+  test:
+    batch_size: 1
+    num_workers: 0
+img_h: 256
+img_w: 512
+pixel_per_meter: 2
+augmentation:
+  rot90: false
+  flip: false
+  image: 
+    apply: true
+    brightness: 0.5
+    contrast: 0.4
+    saturation: 0.4
+    hue: 0.1592
